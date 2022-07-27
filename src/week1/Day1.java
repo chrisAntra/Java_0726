@@ -137,7 +137,7 @@ interface inter {
  *
  */
 class Test2 {
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args)  throws Exception{
         Class clzz = Class.forName("week1.Test1");
         Test1 t1 = new Test1();
         Test1 t2 = new Test1();
@@ -227,6 +227,7 @@ class Test5 {
  *      String
  *      Integer
  *      Boolean
+ *      ..
  */
 class Test6 {
     public static void main(String[] args) {
@@ -241,5 +242,44 @@ class Test6 {
             res.append(s1.charAt(i));
         }
         System.out.println(res);
+    }
+}
+final class MyList {
+    private final List<Integer> innerList;
+    public MyList(List<Integer> list) {
+        //deep copy
+        this.innerList = new LinkedList<>(list);//this just for explain
+    }
+    public List<Integer> getList() {
+        //deep
+        return new LinkedList<>(innerList);
+    }
+}
+
+class Test7 {
+    public static void main(String[] args) {
+
+        List<List> nestedList = new LinkedList<>();
+        List<List> copyList = new LinkedList<>(nestedList);
+        //  n[l1[1, 2,3], l2 ]    c[l1*[1,2],   l2]
+        List<Integer> list = new LinkedList<>();
+        list.add(1);
+        //list-> list obj
+        MyList myList = new MyList(list);
+        //list.add(2);
+        myList.getList().add(3);
+        System.out.println(myList.getList());
+
+    }
+}
+class Test8{
+    public static void main(String[] args) {
+        Integer i1 = 128;
+        Integer i2 = 128;
+        // integer pool  -128- 127
+        String str ="abc";
+        String str2=new String("abc").intern();
+        System.out.println(str==str2);
+        //System.out.println(i1.equals(i2));
     }
 }
