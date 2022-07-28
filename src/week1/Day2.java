@@ -92,6 +92,8 @@ class Test10 {
 
 /**
  * HashMap -> O(1)
+ *      hashcode()
+ *      equals()
  *      key -value
  *      Node[] -> TreeNode    50 100 100/50 = 2
  *      [][][kv1][]
@@ -116,6 +118,38 @@ class Test10 {
  *
  *
  */
+class Student {
+    int id;
+    String name;
+
+    public Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return id == student.id && Objects.equals(name, student.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+}
+class TestEqual{
+    public static void main(String[] args) {
+        Student stu1 = new Student(1, "chris");
+        Student stu2 = new Student(1, "chris");
+        HashMap<Student, Integer> hm = new HashMap<Student, Integer>();
+        hm.put(stu1, 1);
+        System.out.println(hm.get(stu2));
+        System.out.println(stu1.equals(stu2));
+    }
+}
 class Test11{
     public static void main(String[] args) {
         HashMap<Integer, Integer> hm = new HashMap<>();
@@ -153,5 +187,34 @@ class Test12 {
  *  dup        no dup
  *  matain inseriton   will not
  */
+
+/**
+ * Iterator
+ *  modCount
+ *  ExpectModCount
+ *
+ */
+class Test13 {
+    public static void main(String[] args) {
+        List<Integer> list = new LinkedList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(4);
+        //for each
+        Iterator<Integer> it = list.listIterator();
+        while(it.hasNext()) {
+            if(it.next()==2) it.remove();
+        }
+        System.out.println(list);
+//        for(int num: list) {
+//            System.out.println("here");
+//            if(num==2) {
+//                System.out.println("remove");
+//                list.add(2);
+//            }
+//        }
+    }
+}
 
 
