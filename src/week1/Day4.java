@@ -2,10 +2,7 @@ package week1;
 
 
 import java.util.*;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -179,34 +176,57 @@ class TestDeadLock {
 /**
  * ThreadPool
  *      reuse thread
- *      [][][][t3][t2][t1] worker thread
+ *      [t6][t5][t4][t3][t2][t1] worker thread
  *   Executor, ExecutorService
  *
  *   Executors
+ *   3 core thread   3 extra worker thread
+ *   ThreadPoolExecutor(int corePoolSize,
+ *                               int maximumPoolSize,
+ *                               long keepAliveTime,
+ *                               TimeUnit unit,
+ *                               BlockingQueue<Runnable> workQueue)
+ *    Diff type of thread pool
+ *          FixedThreadPool  core pool size = max
+ *          CachedThreadPool core < max submit the task
  *
+ *          ScheduledThreadPool    delay, fix rate
+ *
+ *          ForkJoinPool        submit
+ *              [1,2,3...10]->[1,2,3] t1  6 -> sum
+ *                          ->[4,5,6] t2 15
+ *                          ->[7,8,9] t3 24
+ *                          ->[10]    t4  10
+ *          parellel stream
+ *          stream
  */
 class TestThreadPool {
     public static void main(String[] args) throws Exception{
-        Executor ex;
-        ExecutorService es;
-        ex = Executors.newFixedThreadPool(3);
-        ex.execute(()->{
-            System.out.println("i am a task");
-        });
+//        Executor ex;
+//        ExecutorService es;
+//        ex = Executors.newFixedThreadPool(3);
+//        ex.execute(()->{
+//            System.out.println("i am a task");
+//        });
+//
+//        es = Executors.newCachedThreadPool();
+//        Future<Integer> future = es.submit(()->{
+//            Thread.currentThread().sleep(3000);
+//            return 1;
+//        });
+        ScheduledExecutorService es2 = Executors.newScheduledThreadPool(3);
+        es2.schedule(()->{
+            System.out.println("shcheduled task");
+        },3000,TimeUnit.MILLISECONDS);
 
-        es = Executors.newCachedThreadPool();
-        Future<Integer> future = es.submit(()->{
-            Thread.currentThread().sleep(3000);
-            return 1;
-        });
 //        Thread t1 = new Thread();
 //        t1.start();
 //        //blocking you thread invoke the join() wait for target thread t1
 //        t1.join();
         //block
-        System.out.println("i am waiting");
-        //Completable future
-        int x=future.get();
+//        System.out.println("i am waiting");
+//        //Completable future
+//        int x=future.get();
         ///otherlogic
 
     }
